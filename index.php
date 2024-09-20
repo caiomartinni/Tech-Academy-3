@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diário do Apocalipse</title>
-</head>
-<body>
-    
-</body>
-</html>
+<?php
+echo"teste";
+$conteudo = file_get_contents ("http://localhost/Tech-Academy-3/");
+
+$arrayAssociativo = json_decode ($conteudo);
+
+include "template.phtml";
+
+?>
