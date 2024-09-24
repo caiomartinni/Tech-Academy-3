@@ -23,4 +23,18 @@ public class Cena {
         }
         return -1;  // Cena inválida
     }
+
+    public void adicionarOpcao(String novaOpcao) {
+        String[] novasOpcoes = new String[opcoes.length + 1];
+        int[] novasProximasCenas = new int[proximasCenas.length + 1];
+
+        System.arraycopy(opcoes, 0, novasOpcoes, 0, opcoes.length);
+        System.arraycopy(proximasCenas, 0, novasProximasCenas, 0, proximasCenas.length);
+
+        novasOpcoes[opcoes.length] = novaOpcao;
+        novasProximasCenas[proximasCenas.length] = -1; // Usar lanterna não leva a nova cena.
+
+        this.opcoes = novasOpcoes;
+        this.proximasCenas = novasProximasCenas;
+    }
 }

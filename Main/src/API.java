@@ -21,22 +21,31 @@ public class API {
                         "Abri a porta e fui em direção ao quarto dos meus pais. " +
                                 "A casa está muito escura. Devo procurar uma LANTERNA ou continuar no escuro?",
                         new String[] {"Procurar lanterna", "Continuar no escuro"},
-                        new int[] {4, 5}  // Escolha 1 vai para Cena 4, Escolha 2 vai para Cena 5
+                        new int[] {20, 5}  // Escolha 1 vai para Cena 4, Escolha 2 vai para Cena 5
                 );
+            case 20: // Cena 3
+                return new Cena(
+                        "Que maravilha pelo menos algo deu certo, achei uma lanterna !" +
+                                "Agora preciso USALA !",
+
+                        new String[] {"Usar lanterna"},
+                        new int[] {4}  // Escolha 1 vai para Cena 6, Escolha 2 vai para Cena 7, Escolha 3 vai para Cena 8
+                );
+
             case 4: // Cena 3
                 return new Cena(
-                        "Está tudo muito escuro, não consigo andar sem uma LANTERNA. " +
-                                "Agora que tenho uma lanterna, vou procurar meus PAIS, mas não há ninguém no quarto. " +
+                        "Estava muito escuro, agora com a luz da lanterna consigo ver alguma coisa" +
+                                "vou procurar meus PAIS, mas não há ninguém no quarto. " +
                                 "Devo procurar meu CELULAR ou continuar procurando pela casa?",
-                        new String[] {"Procurar celular", "Procurar pela casa"},
-                        new int[] {6, 7}  // Escolha 1 vai para Cena 6, Escolha 2 vai para Cena 7
+                        new String[] {"Procurar celular", "Procurar pela casa",},
+                        new int[] {6, 7, 5}  // Escolha 1 vai para Cena 6, Escolha 2 vai para Cena 7, Escolha 3 vai para Cena 8
                 );
             case 5: // Cena alternativa CONTINUAR NO ESCURO
                 return new Cena(
                         "Você tentou continuar no escuro, mas acabou se perdendo e ficou muito confuso. " +
                                 "Talvez seja melhor procurar uma lanterna.",
-                        new String[] {"Procurar lanterna"},
-                        new int[] {4}
+                        new String[] {"Voltar para procurar uma lanterna"},
+                        new int[] {3}
                 );
             case 6: // Cena 4 - CELULAR
                 return new Cena(

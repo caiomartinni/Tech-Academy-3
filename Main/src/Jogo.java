@@ -44,12 +44,28 @@ public class Jogo {
             // Adicionar a opção de "Checar Inventário"
             System.out.println((opcoes.length + 1) + ": Checar Inventário");
 
+            // Se o jogador está na cena 4 e tem a lanterna, adicionar a opção de usar a lanterna
+            if (cenaAtual.getProximaCena(0) == 4 && inventario.temItem("Lanterna")) {
+                System.out.println((opcoes.length + 2) + ": Usar lanterna");
+            }
+
             System.out.println("Escolha uma opção: ");
             int escolha = scanner.nextInt() - 1;  // Subtrai 1 para alinhar com o índice do array
 
             // Checar se o jogador escolheu "Checar Inventário"
             if (escolha == opcoes.length) {
                 inventario.listarItens();
+            } else if (cenaAtual.getProximaCena(0) == 4 && escolha == opcoes.length + 1) {
+                // Usar lanterna
+                if (inventario.temItem("Lanterna")) {
+                    System.out.println("Você usou a lanterna. Agora a casa está iluminada!");
+
+                    // Permitir que o jogador permaneça na cena 4
+                    // Atualizar a descrição da cena se necessário
+                    cenaAtual = api.carregarCena(4); // Apenas recarregar a cena 4 para mostrar que agora está iluminada
+                } else {
+                    System.out.println("Você não tem uma lanterna para usar.");
+                }
             } else if (escolha < 0 || escolha >= opcoes.length) {
                 System.out.println("Escolha inválida. Tente novamente.");
             } else {
@@ -58,7 +74,7 @@ public class Jogo {
                 cenaAtual = api.carregarCena(proximaCena);
 
                 // Lógica de inventário para adicionar itens em cenas específicas
-                if (proximaCena == 4) { // Cena onde o jogador encontra a lanterna
+                if (proximaCena == 20) { // Cena onde o jogador encontra a lanterna
                     inventario.adicionarItem("Lanterna");
                 } else if (proximaCena == 6) { // Cena onde o jogador encontra o celular
                     inventario.adicionarItem("Celular");
