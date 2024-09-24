@@ -52,29 +52,39 @@ public class Jogo {
                 System.out.println((i + 1) + ": " + opcoes[i]);
             }
 
-            // Adicionar opções de salvar jogo, checar inventário, reiniciar e sair
+            // Adicionar opção de checar inventário
             System.out.println((opcoes.length + 1) + ": Checar Inventário");
-            System.out.println((opcoes.length + 2) + ": Salvar Jogo");
-            System.out.println((opcoes.length + 3) + ": Reiniciar Jogo");
-            System.out.println((opcoes.length + 4) + ": Sair do Jogo");
 
+            // Adicionar a opção de usar a lanterna (se aplicável)
             if (cenaAtual.getProximaCena(0) == 4 && inventario.temItem("Lanterna")) {
-                System.out.println((opcoes.length + 5) + ": Usar lanterna");
+                System.out.println((opcoes.length + 2) + ": Usar lanterna");
             }
+
+            // Separar visualmente as opções adicionais
+            System.out.println("--------------");
+            System.out.println("Comandos:");
+            System.out.println("S: Salvar Jogo");
+            System.out.println("R: Reiniciar Jogo");
+            System.out.println("X: Sair do Jogo");
+            System.out.println("--------------");
 
             System.out.println("Escolha uma opção: ");
-            int escolha = scanner.nextInt() - 1;
+            String escolhaInput = scanner.next();  // Usar string para capturar letras
 
             // Checar inventário
-            if (escolha == opcoes.length) {
+            if (escolhaInput.equalsIgnoreCase(String.valueOf(opcoes.length + 1))) {
                 inventario.listarItens();
             }
+            // Usar lanterna
+            else if (cenaAtual.getProximaCena(0) == 4 && escolhaInput.equalsIgnoreCase(String.valueOf(opcoes.length + 2))) {
+                usarLanterna();
+            }
             // Salvar jogo
-            else if (escolha == opcoes.length + 1) {
+            else if (escolhaInput.equalsIgnoreCase("S")) {
                 salvarProgresso();
             }
             // Reiniciar jogo
-            else if (escolha == opcoes.length + 2) {
+            else if (escolhaInput.equalsIgnoreCase("R")) {
                 System.out.println("Reiniciando o jogo...");
                 idCenaAtual = 1;  // Reiniciar a partir da primeira cena
                 inventario = new Inventario();  // Limpar o inventário
@@ -82,31 +92,32 @@ public class Jogo {
                 break;
             }
             // Sair do jogo
-            else if (escolha == opcoes.length + 3) {
+            else if (escolhaInput.equalsIgnoreCase("X")) {
                 System.out.println("Saindo do jogo...");
                 break;
             }
-            // Usar lanterna
-            else if (cenaAtual.getProximaCena(0) == 4 && escolha == opcoes.length + 4) {
-                usarLanterna();
-            }
-            // Verifica se a escolha é válida
-            else if (escolha >= 0 && escolha < opcoes.length) {
-                idCenaAtual = cenaAtual.getProximaCena(escolha);
-                cenaAtual = api.carregarCena(idCenaAtual);
+            // Verifica se a escolha é válida para as opções principais
+            else {
+                try {
+                    int escolha = Integer.parseInt(escolhaInput) - 1;
 
-                if (idCenaAtual == 20) {
-                    inventario.adicionarItem("Lanterna");
-                } else if (idCenaAtual == 6) {
-                    inventario.adicionarItem("Celular");
+                    if (escolha >= 0 && escolha < opcoes.length) {
+                        idCenaAtual = cenaAtual.getProximaCena(escolha);
+                        cenaAtual = api.carregarCena(idCenaAtual);
+
+                        if (idCenaAtual == 20) {
+                            inventario.adicionarItem("Lanterna");
+                        } else if (idCenaAtual == 6) {
+                            inventario.adicionarItem("Celular");
+                        }
+                    } else {
+                        System.out.println("Escolha inválida. Tente novamente.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Opção inválida. Por favor, escolha um número ou uma opção adicional válida.");
                 }
-            } else {
-                System.out.println("Escolha inválida. Tente novamente.");
             }
         }
-    }
-
-    private void usarLanterna() {
     }
 
     private void salvarProgresso() {
@@ -122,4 +133,13 @@ public class Jogo {
             jogar();
         }
     }
+
+    private void usarLanterna() {
+        if (inventario.temItem("Lanterna")) {
+            System.out.println("Você usou a lanterna. Agora a casa está iluminada!");
+        } else {
+            System.out.println("Você não tem uma lanterna para usar.");
+        }
+    }
 }
+
