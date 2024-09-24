@@ -17,15 +17,20 @@ public class Jogo {
     }
 
     public void start() {
-        System.out.println("Bem-vindo ao jogo! Digite 'Start' para começar ou 'Carregar' para carregar um jogo salvo.");
-        String input = scanner.nextLine();
+        while (true) {
+            System.out.println("Bem-vindo ao jogo! Digite 'Start' para começar, 'Carregar' para carregar um jogo salvo, ou 'Sair' para encerrar.");
+            String input = scanner.nextLine();
 
-        if ("Start".equalsIgnoreCase(input)) {
-            jogar();
-        } else if ("Carregar".equalsIgnoreCase(input) && salvamento.existeProgressoSalvo()) {
-            carregarProgresso();
-        } else {
-            System.out.println("Comando inválido ou sem progresso salvo. Tente novamente.");
+            if ("Start".equalsIgnoreCase(input)) {
+                jogar();  // Iniciar o jogo
+            } else if ("Carregar".equalsIgnoreCase(input) && salvamento.existeProgressoSalvo()) {
+                carregarProgresso();  // Carregar jogo salvo
+            } else if ("Sair".equalsIgnoreCase(input)) {
+                System.out.println("Saindo do jogo...");
+                break;  // Encerrar o jogo
+            } else {
+                System.out.println("Comando inválido ou sem progresso salvo. Tente novamente.");
+            }
         }
     }
 
@@ -36,33 +41,57 @@ public class Jogo {
             System.out.println(cenaAtual.getDescricao());
             String[] opcoes = cenaAtual.getOpcoes();
 
+            // Se não houver opções, significa que é uma cena final
             if (opcoes.length == 0) {
                 System.out.println("Fim de Jogo.");
                 break;
             }
 
+            // Exibir as opções da cena
             for (int i = 0; i < opcoes.length; i++) {
                 System.out.println((i + 1) + ": " + opcoes[i]);
             }
 
-            // Adicionar opções de salvar jogo e checar inventário
+            // Adicionar opções de salvar jogo, checar inventário, reiniciar e sair
             System.out.println((opcoes.length + 1) + ": Checar Inventário");
             System.out.println((opcoes.length + 2) + ": Salvar Jogo");
+            System.out.println((opcoes.length + 3) + ": Reiniciar Jogo");
+            System.out.println((opcoes.length + 4) + ": Sair do Jogo");
 
             if (cenaAtual.getProximaCena(0) == 4 && inventario.temItem("Lanterna")) {
-                System.out.println((opcoes.length + 3) + ": Usar lanterna");
+                System.out.println((opcoes.length + 5) + ": Usar lanterna");
             }
 
             System.out.println("Escolha uma opção: ");
             int escolha = scanner.nextInt() - 1;
 
+            // Checar inventário
             if (escolha == opcoes.length) {
                 inventario.listarItens();
-            } else if (escolha == opcoes.length + 1) {
+            }
+            // Salvar jogo
+            else if (escolha == opcoes.length + 1) {
                 salvarProgresso();
-            } else if (cenaAtual.getProximaCena(0) == 4 && escolha == opcoes.length + 2) {
+            }
+            // Reiniciar jogo
+            else if (escolha == opcoes.length + 2) {
+                System.out.println("Reiniciando o jogo...");
+                idCenaAtual = 1;  // Reiniciar a partir da primeira cena
+                inventario = new Inventario();  // Limpar o inventário
+                jogar();  // Reiniciar o ciclo do jogo
+                break;
+            }
+            // Sair do jogo
+            else if (escolha == opcoes.length + 3) {
+                System.out.println("Saindo do jogo...");
+                break;
+            }
+            // Usar lanterna
+            else if (cenaAtual.getProximaCena(0) == 4 && escolha == opcoes.length + 4) {
                 usarLanterna();
-            } else if (escolha >= 0 && escolha < opcoes.length) {
+            }
+            // Verifica se a escolha é válida
+            else if (escolha >= 0 && escolha < opcoes.length) {
                 idCenaAtual = cenaAtual.getProximaCena(escolha);
                 cenaAtual = api.carregarCena(idCenaAtual);
 
