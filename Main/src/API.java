@@ -1,4 +1,4 @@
-public class API {
+/*public class API {
     public Cena carregarCena(int id) {
         switch (id) {
             case 1: // Cena 1
@@ -99,6 +99,74 @@ public class API {
                 );
             default:
                 return null;
+        }
+    }
+}*/
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class API {
+    private String url = "jdbc:mysql://localhost:3306/techacademy3"; // Altere para o seu banco de dados
+    private String usuario = "root"; // Altere para seu usuário
+    private String senha = ""; // Altere para sua senha
+
+    public Cena carregarCena(int id) {
+        Cena cena = null;
+
+        try (Connection conn = DriverManager.getConnection(url, usuario, senha);
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM cenas WHERE id = ?")) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int cenaId = rs.getInt("id");
+                String descricao = rs.getString("descricao");
+                String opcoesString = rs.getString("opcoes");
+                String proximasCenasString = rs.getString("proximasCenas");
+
+                // Converte as opções de string para uma lista de strings
+                List<String> opcoes = new ArrayList<>();
+                if (opcoesString != null && !opcoesString.isEmpty()) {
+                    String[] partesOpcoes = opcoesString.split(",");
+                    for (String parte : partesOpcoes) {
+                        opcoes.add(parte.trim()); // Adiciona cada opção ao array, removendo espaços em branco
+                    }
+                }
+
+                // Converte as próximas cenas de string para uma lista de inteiros
+                List<Integer> proximasCenas = new ArrayList<>();
+                if (proximasCenasString != null && !proximasCenasString.isEmpty()) {
+                    String[] partesProximasCenas = proximasCenasString.split(",");
+                    for (String parte : partesProximasCenas) {
+                        proximasCenas.add(Integer.parseInt(parte.trim())); // Converte cada parte em inteiro
+                    }
+                }
+
+                cena = new Cena(cenaId, descricao, opcoes, proximasCenas);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao carregar cena do banco de dados: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Erro ao converter o número: " + e.getMessage());
+        }
+
+        return cena;
+    }
+
+    // Método para salvar o progresso do jogador
+    public void salvarProgresso(String jogador, int cenaId) {
+        try (Connection conn = DriverManager.getConnection(url, usuario, senha);
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO progresso (jogador, cena_id) VALUES (?, ?)")) {
+            stmt.setString(1, jogador);
+            stmt.setInt(2, cenaId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao salvar progresso: " + e.getMessage());
         }
     }
 }

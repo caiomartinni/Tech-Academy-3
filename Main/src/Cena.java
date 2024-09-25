@@ -1,40 +1,37 @@
-public class Cena {
-    private String descricao;
-    private String[] opcoes;
-    private int[] proximasCenas;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Cena(String descricao, String[] opcoes, int[] proximasCenas) {
+public class Cena {
+    private int id;
+    private String descricao;
+    private List<String> opcoes; // Mudei para List<String>
+    private List<Integer> proximasCenas;
+
+    public Cena(int id, String descricao, List<String> opcoes, List<Integer> proximasCenas) {
+        this.id = id;
         this.descricao = descricao;
-        this.opcoes = opcoes;
+        this.opcoes = opcoes != null ? opcoes : new ArrayList<>(); // Garante que opcoes nunca seja nula
         this.proximasCenas = proximasCenas;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getDescricao() {
         return descricao;
     }
 
-    public String[] getOpcoes() {
+    public List<String> getOpcoes() {
         return opcoes;
     }
 
-    public int getProximaCena(int escolha) {
-        if (escolha >= 0 && escolha < proximasCenas.length) {
-            return proximasCenas[escolha];
-        }
-        return -1;  // Cena inválida
+    public List<Integer> getProximasCenas() {
+        return proximasCenas;
     }
 
-    public void adicionarOpcao(String novaOpcao) {
-        String[] novasOpcoes = new String[opcoes.length + 1];
-        int[] novasProximasCenas = new int[proximasCenas.length + 1];
-
-        System.arraycopy(opcoes, 0, novasOpcoes, 0, opcoes.length);
-        System.arraycopy(proximasCenas, 0, novasProximasCenas, 0, proximasCenas.length);
-
-        novasOpcoes[opcoes.length] = novaOpcao;
-        novasProximasCenas[proximasCenas.length] = -1; // Usar lanterna não leva a nova cena.
-
-        this.opcoes = novasOpcoes;
-        this.proximasCenas = novasProximasCenas;
+    // Método para obter a próxima cena com base na escolha do jogador
+    public int getProximaCena(int index) {
+        return proximasCenas.size() > index ? proximasCenas.get(index) : -1; // Retorna -1 se não houver próxima cena
     }
 }

@@ -39,7 +39,9 @@ public class Jogo {
 
         while (cenaAtual != null) {
             System.out.println(cenaAtual.getDescricao());
-            String[] opcoes = cenaAtual.getOpcoes();
+
+            // Convertendo List<String> para String[]
+            String[] opcoes = cenaAtual.getOpcoes().toArray(new String[0]);
 
             // Se não houver opções, significa que é uma cena final
             if (opcoes.length == 0) {
@@ -142,4 +144,3 @@ public class Jogo {
         }
     }
 }
-
