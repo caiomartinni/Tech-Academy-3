@@ -111,9 +111,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class API {
-    private String url = "jdbc:mysql://localhost:3306/techacademy3"; // Altere para o seu banco de dados
-    private String usuario = "root"; // Altere para seu usuário
-    private String senha = ""; // Altere para sua senha
+    private String url = "jdbc:mysql://localhost:3306/techacademy3";
+    private String usuario = "root";
+    private String senha = "";
 
     public Cena carregarCena(int id) {
         Cena cena = null;
@@ -129,21 +129,19 @@ public class API {
                 String opcoesString = rs.getString("opcoes");
                 String proximasCenasString = rs.getString("proximasCenas");
 
-                // Converte as opções de string para uma lista de strings
                 List<String> opcoes = new ArrayList<>();
                 if (opcoesString != null && !opcoesString.isEmpty()) {
                     String[] partesOpcoes = opcoesString.split(",");
                     for (String parte : partesOpcoes) {
-                        opcoes.add(parte.trim()); // Adiciona cada opção ao array, removendo espaços em branco
+                        opcoes.add(parte.trim());
                     }
                 }
 
-                // Converte as próximas cenas de string para uma lista de inteiros
                 List<Integer> proximasCenas = new ArrayList<>();
                 if (proximasCenasString != null && !proximasCenasString.isEmpty()) {
                     String[] partesProximasCenas = proximasCenasString.split(",");
                     for (String parte : partesProximasCenas) {
-                        proximasCenas.add(Integer.parseInt(parte.trim())); // Converte cada parte em inteiro
+                        proximasCenas.add(Integer.parseInt(parte.trim()));
                     }
                 }
 
@@ -158,7 +156,6 @@ public class API {
         return cena;
     }
 
-    // Método para salvar o progresso do jogador
     public void salvarProgresso(String jogador, int cenaId) {
         try (Connection conn = DriverManager.getConnection(url, usuario, senha);
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO progresso (jogador, cena_id) VALUES (?, ?)")) {
