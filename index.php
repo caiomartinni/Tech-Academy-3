@@ -16,15 +16,15 @@
                 <?php
                 session_start();
 
-                // Conexão com o banco de dados
+                
                 $servername = "localhost";
-                $username = "root"; // Seu usuário
-                $password = ""; // Sua senha
-                $dbname = "techacademy3"; // Nome do banco de dados
+                $username = "root"; 
+                $password = ""; 
+                $dbname = "techacademy3"; 
                 
                 $conn = new mysqli($servername, $username, $password, $dbname);
                 
-                // Verifica a conexão
+                
                 if ($conn->connect_error) {
                     die("Erro de conexão: " . $conn->connect_error);
                 }
@@ -50,12 +50,12 @@
                     }
                 }
                 
-                // Inicia o jogo
+                
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $input = trim($_POST['entrada']);
                     
                     if (!isset($_SESSION['cenaAtual'])) {
-                        // Primeira execução
+                        
                         if (strtolower($input) == 'start') {
                             $_SESSION['cenaAtual'] = 1;
                             $cena = carregarCena($_SESSION['cenaAtual'], $conn);
@@ -74,12 +74,12 @@
                             echo "Comando inválido. Digite 'Start' para começar ou 'Carregar' para carregar um jogo salvo.<br>";
                         }
                     } else {
-                        // Jogando
+                        
                         if ($input == 's') {
                             $_SESSION['progresso'] = ['cenaAtual' => $_SESSION['cenaAtual'], 'inventario' => $_SESSION['inventario']];
                             echo "Progresso salvo com sucesso!<br>";
                         } elseif ($input == 'r') {
-                            $_SESSION['cenaAtual'] = 1; // Reinicia o jogo
+                            $_SESSION['cenaAtual'] = 1; 
                             $_SESSION['inventario'] = [];
                             echo "Jogo reiniciado.<br>";
                             $cena = carregarCena($_SESSION['cenaAtual'], $conn);
@@ -94,19 +94,19 @@
                             $opcoes = $_SESSION['opcoes'];
                             if (is_numeric($input) && $input >= 1 && $input <= count($opcoes)) {
                                 $cenaAtual = $_SESSION['cenaAtual'];
-                                $cenaProximaId = $cenaAtual + $input; // Ajuste conforme a lógica de seu jogo
+                                $cenaProximaId = $cenaAtual + $input; 
                                 $_SESSION['cenaAtual'] = $cenaProximaId;
                                 $cena = carregarCena($cenaProximaId, $conn);
                                 echo "<p>" . $cena['descricao'] . "</p>";
                 
-                                // Adiciona itens ao inventário conforme a cena
+                                
                                 if ($cena['id'] == 20) {
                                     adicionarItemInventario("Lanterna");
                                 } elseif ($cena['id'] == 6) {
                                     adicionarItemInventario("Celular");
                                 }
                 
-                                // Exibe as opções numéricas
+                                
                                 $opcoes = explode(',', $cena['opcoes']);
                                 echo "<h3>Opções:</h3>";
                                 foreach ($opcoes as $key => $opcao) {
@@ -121,7 +121,7 @@
                     echo "<p>Bem-vindo ao jogo! Digite 'Start' para começar, 'Carregar' para carregar um jogo salvo, ou 'Sair' para encerrar.</p>";
                 }
                 
-                // Fecha a conexão
+                
                 $conn->close();
                 ?>
             </div>
