@@ -80,7 +80,20 @@ INSERT INTO cenas (id, descricao, opcoes, proximasCenas) VALUES
 (11, 'Você correu para a delegacia e conseguiu se salvar. O mundo está em caos, mas pelo menos você está seguro por enquanto. Fim de Jogo - Você sobreviveu!', '', ''),
 (12, 'Você decidiu investigar o barulho e encontrou seus pais transformados em zumbis. Antes de poder reagir, eles te atacam. Fim de Jogo - Você morreu!', '', '');
 
+create table itens (
+    id int PRIMARY KEY,
+    nome varchar(100),
+    descricao TEXT,
+    cena_id INT, 
+    FOREIGN KEY (cena_id) REFERENCES cenas(id)
+);
 
+INSERT INTO itens(id, nome, descricao, cena_id) VALUES
+(1, 'Lanterna', 'Uma lanterna útil para iluminar áreas escuras', 20),
+(2, 'Celular', 'Um celular, mas sem sinal no momento', 6);
 
+SELECT cenas.descricao AS descricao_cena, itens.nome AS nome_item, itens.descricao AS descricao_item
+FROM cenas
+INNER JOIN itens ON cenas.id = itens.cena_id;
 
 
