@@ -13,18 +13,23 @@ public class Jogo {
         this.scanner = new Scanner(System.in);
         this.inventario = new Inventario();
         this.salvamento = new Salvamento();
-        this.idCenaAtual = 1;
+        this.idCenaAtual = 1;  // Iniciar o jogo na primeira cena
     }
 
     public void start() {
+        // Mostrar a mensagem de boas-vindas e opções
+        System.out.println("Bem-vindo ao jogo! Digite 'Start' para começar, 'Carregar' para carregar um jogo salvo, ou 'Sair' para encerrar.");
+
         while (true) {
-            System.out.println("Bem-vindo ao jogo! Digite 'Start' para começar, 'Carregar' para carregar um jogo salvo, ou 'Sair' para encerrar.");
             String input = scanner.nextLine();
 
             if ("Start".equalsIgnoreCase(input)) {
+                // Ao escolher 'Start', o jogo começa diretamente com a primeira cena
                 jogar();
+                break;
             } else if ("Carregar".equalsIgnoreCase(input) && salvamento.existeProgressoSalvo()) {
                 carregarProgresso();
+                break;
             } else if ("Sair".equalsIgnoreCase(input)) {
                 System.out.println("Saindo do jogo...");
                 break;
@@ -35,6 +40,7 @@ public class Jogo {
     }
 
     private void jogar() {
+        // Carregar e exibir a cena atual
         Cena cenaAtual = api.carregarCena(idCenaAtual);
 
         while (cenaAtual != null) {
@@ -47,16 +53,19 @@ public class Jogo {
                 break;
             }
 
+            // Mostrar opções
             for (int i = 0; i < opcoes.length; i++) {
                 System.out.println((i + 1) + ": " + opcoes[i]);
             }
 
+            // Adicionar opção de checar inventário
             System.out.println((opcoes.length + 1) + ": Checar Inventário");
 
             if (cenaAtual.getProximaCena(0) == 4 && inventario.temItem("Lanterna")) {
                 System.out.println((opcoes.length + 2) + ": Usar lanterna");
             }
 
+            // Exibir comandos do jogo
             System.out.println("--------------");
             System.out.println("Comandos:");
             System.out.println("S: Salvar Jogo");
@@ -64,30 +73,26 @@ public class Jogo {
             System.out.println("X: Sair do Jogo");
             System.out.println("--------------");
 
+            // Capturar a escolha do jogador
             System.out.println("Escolha uma opção: ");
-            String escolhaInput = scanner.next();  // Usar string para capturar letras
+            String escolhaInput = scanner.next();  // Capturar tanto números quanto letras
 
             if (escolhaInput.equalsIgnoreCase(String.valueOf(opcoes.length + 1))) {
                 inventario.listarItens();
-            }
-            else if (cenaAtual.getProximaCena(0) == 4 && escolhaInput.equalsIgnoreCase(String.valueOf(opcoes.length + 2))) {
+            } else if (cenaAtual.getProximaCena(0) == 4 && escolhaInput.equalsIgnoreCase(String.valueOf(opcoes.length + 2))) {
                 usarLanterna();
-            }
-            else if (escolhaInput.equalsIgnoreCase("S")) {
+            } else if (escolhaInput.equalsIgnoreCase("S")) {
                 salvarProgresso();
-            }
-            else if (escolhaInput.equalsIgnoreCase("R")) {
+            } else if (escolhaInput.equalsIgnoreCase("R")) {
                 System.out.println("Reiniciando o jogo...");
-                idCenaAtual = 1;  // Reiniciar a partir da primeira cena
-                inventario = new Inventario();  // Limpar o inventário
+                idCenaAtual = 1;
+                inventario = new Inventario();  // Reiniciar o inventário
                 jogar();  // Reiniciar o ciclo do jogo
                 break;
-            }
-            else if (escolhaInput.equalsIgnoreCase("X")) {
+            } else if (escolhaInput.equalsIgnoreCase("X")) {
                 System.out.println("Saindo do jogo...");
                 break;
-            }
-            else {
+            } else {
                 try {
                     int escolha = Integer.parseInt(escolhaInput) - 1;
 
