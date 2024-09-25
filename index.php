@@ -115,48 +115,9 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
     <title>Jogo de Texto</title>
-    <style>
-    body {
-        font-family: 'Courier New', monospace;
-        background-color: #2e2e2e; /* Fundo escuro */
-        color: #ffffff; /* Letras brancas */
-        margin: 0;
-        padding: 20px;
-    }
-    h1 {
-        color: #00ff00; /* Detalhes verdes */
-    }
-    .command-guide {
-        background-color: #1c1c1c; /* Fundo um pouco mais escuro para os comandos */
-        padding: 10px;
-        border-radius: 5px;
-        margin-top: 20px;
-    }
-    input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: #444; /* Fundo do input */
-        color: #fff; /* Letras do input */
-    }
-    input[type="submit"] {
-        background-color: #00ff00; /* Botão verde */
-        color: #000; /* Texto preto */
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-    input[type="submit"]:hover {
-        background-color: #00cc00; /* Efeito hover no botão */
-    }
-    .options {
-        margin-top: 10px;
-    }
-</style>
-
+    
 </head>
 <body>
     <form method="post">
